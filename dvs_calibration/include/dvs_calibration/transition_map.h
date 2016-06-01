@@ -26,15 +26,29 @@
 
 namespace dvs_calibration {
 
+/** Class that tracks the times of on-off transitions for each DVS pixel as well as a count the number of
+ * transitions occuring in a time fitting a predefined frequency interval for each pixel.
+ */
 class TransitionMap
 {
 public:
   TransitionMap(const CalibrationParameters params = CalibrationParameters());
   int max();
+  
+  /*! @short Updates off-event table times and the count of on-off event pairs fitting the defined time interval.
+   * For off-events it updates the corresponding time in the map, for on-events it checks when the last off-event
+   * has occured and if the times fits the predefined interval, the count of such events for the given pixel is incremented.
+   */ 
   void update(const dvs_msgs::EventArray::ConstPtr& msg);
+  
+  /*! Returns the result of the last find_pattern() call
+   */
   bool has_pattern() {
     return _has_pattern;
   }
+  
+  /*! Sets the _has_pattern variable
+   */
   void find_pattern();
 
   std::vector<cv::Point2f> pattern;

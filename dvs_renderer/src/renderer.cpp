@@ -105,6 +105,8 @@ void eventsCallback(const dvs_msgs::EventArray::ConstPtr& msg)
       cv_image.image += on_events;
       cv_image.image -= off_events;
     }
+    
+    cv_image.header.stamp = ros::Time::now();
 
     image_pub_.publish(cv_image.toImageMsg());
 
